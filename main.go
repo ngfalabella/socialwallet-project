@@ -1,52 +1,15 @@
 package main
-
 import "fmt"
 
-const operationWithdraw = "withdraw"
-const operationDeposit = "deposit"
-const operationTransfer = "transfer"
+func main(){
+	transactionAmounts := []int{1200, 2500, 3000, 1500, 4000}
 
-func processWalletOperation(balanceInCents int, amountInCents int, operation string) (int, bool) {
+	recentTransactions := transactionAmounts[2:]
 
-	if amountInCents <= 0 {
-		return balanceInCents, false
-	}
+	fmt.Println(recentTransactions)
 
-	if amountInCents > balanceInCents {
-		return balanceInCents, false
-	}
+	recentTransactions[0] = 9999
 
-	switch operation {
-	case operationWithdraw:
-		return balanceInCents - amountInCents, true
-
-	case operationDeposit:
-		return balanceInCents + amountInCents, true
-
-	case operationTransfer:
-		return balanceInCents - amountInCents, true
-
-	default:
-		return balanceInCents, false
-
-	}
-
-}
-
-func main() {
-
-	userBalanceTest := 10000
-	userAmounTest := 2500
-	userOperationTest := operationDeposit
-
-	result, ok := processWalletOperation(userBalanceTest, userAmounTest, userOperationTest)
-
-	if !ok {
-		fmt.Println("Ocurrio un error al procesar")
-		fmt.Println("Saldo actual : ", result)
-		return
-	}
-
-	fmt.Println("Saldo actual : ", result)
-
+	fmt.Println(transactionAmounts)
+	fmt.Println(recentTransactions)
 }
