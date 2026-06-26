@@ -14,9 +14,22 @@ func NewWallet(ownerID int , currency string ) Wallet {
 	}
 }
 
-func ( wallet *Wallet) Deposit( amount int) {
+func ( wallet *Wallet) Deposit( amount int) bool {
 	if amount <= 0 {
-		return
+		return false
 	}
 	wallet.Balance += amount
+	return true
+}
+func ( wallet  *Wallet) Withdraw( amount int) bool {
+
+	if amount <= 0{
+		return false
+	}
+
+	if amount > wallet.Balance {
+		return false
+	}
+		wallet.Balance -= amount
+		return true
 }

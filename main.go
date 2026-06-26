@@ -5,6 +5,8 @@ import (
 	"social-wallet/domain"
 	)
 
+
+
 func main() {
 	userGabriel := domain.NewUser(1,"Gabriel","gabriel@gmail.com")
 	userAna := domain.NewUser(2,"Ana","ana@gmail.com")
@@ -30,7 +32,48 @@ func main() {
 	fmt.Println("GABRIEL : " ,transactionGabriel)
 
 	fmt.Println("Antes del deposito " , walletGabriel.Balance )
-	walletGabriel.Deposit(10000) 
+	isDeposited := walletGabriel.Deposit(10000) 
+
+	if isDeposited {
+		fmt.Println("Deposito exitoso")
+	}else{
+		fmt.Println("Monto invalido")
+	}
+
 	fmt.Println("Despues del deposito " , walletGabriel.Balance )
 
+	isWithdraw := walletGabriel.Withdraw(200)
+
+	if isWithdraw{
+		fmt.Println("Retiro exitoso")
+	}else{
+		fmt.Println("No se pudo hacer el retiro monto invalido")
+	}
+
+	
+	fmt.Println("Despues del retiro " , walletGabriel.Balance )
+
+	isWithdraw = walletGabriel.Withdraw(2500)
+
+	if isWithdraw{
+		fmt.Println("Retiro exitoso")
+	}else{
+		fmt.Println("No se pudo hacer el retiro monto invalido")
+	}
+
+	isWithdraw = walletGabriel.Withdraw(9000)
+
+	if isWithdraw{
+		fmt.Println("Retiro exitoso")
+	}else{
+		fmt.Println("No se pudo hacer el retiro monto invalido")
+	}
+
+	isWithdraw = walletGabriel.Withdraw(-500)
+
+	if isWithdraw{
+		fmt.Println("Retiro exitoso")
+	}else{
+		fmt.Println("No se pudo hacer el retiro monto invalido")
+	}
 }
