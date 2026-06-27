@@ -1,5 +1,6 @@
 package domain
 
+
 type Wallet struct {
 	OwnerID int 
 	Balance int
@@ -14,22 +15,23 @@ func NewWallet(ownerID int , currency string ) Wallet {
 	}
 }
 
-func ( wallet *Wallet) Deposit( amount int) bool {
+func ( wallet *Wallet) Deposit( amount int) error {
 	if amount <= 0 {
-		return false
+		return ErrInvalidAmount
 	}
 	wallet.Balance += amount
-	return true
+	return nil
 }
-func ( wallet  *Wallet) Withdraw( amount int) bool {
+
+func ( wallet  *Wallet) Withdraw( amount int) error {
 
 	if amount <= 0{
-		return false
+		return ErrInvalidAmount
 	}
 
 	if amount > wallet.Balance {
-		return false
+		return ErrInsufficientBalance
 	}
 		wallet.Balance -= amount
-		return true
+		return nil
 }
