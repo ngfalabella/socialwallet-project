@@ -1,37 +1,19 @@
 package domain
 
-
-type Wallet struct {
-	OwnerID int 
+type Wallet struct  {
+	OwnerID int
 	Balance int
-	Currency string
+	Currency Currency
 }
 
-func NewWallet(ownerID int , currency string ) Wallet {
-	return Wallet {
+
+func NewWallet ( ownerID int , currencyMoney Currency) (Wallet,error) {
+	if !currencyMoney.IsValid() {
+		return Wallet{} , WalletTypeError
+	}
+	return Wallet{
 		OwnerID: ownerID,
 		Balance: 0,
-		Currency: currency,
-	}
-}
-
-func ( wallet *Wallet) Deposit( amount int) error {
-	if amount <= 0 {
-		return ErrInvalidAmount
-	}
-	wallet.Balance += amount
-	return nil
-}
-
-func ( wallet  *Wallet) Withdraw( amount int) error {
-
-	if amount <= 0{
-		return ErrInvalidAmount
-	}
-
-	if amount > wallet.Balance {
-		return ErrInsufficientBalance
-	}
-		wallet.Balance -= amount
-		return nil
+		Currency: currencyMoney,
+	} ,nil
 }
