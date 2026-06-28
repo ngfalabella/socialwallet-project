@@ -1,5 +1,4 @@
 package domain
-
 import "errors"
 
-var EmailEmptyInvalid = errors.New("El email no puede estar vacio")
+var ErrInvalidEmail = errors.New("El email es obligatorio")

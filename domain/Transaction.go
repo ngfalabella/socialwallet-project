@@ -1,38 +1,24 @@
 package domain
 
 type Transaction struct {
-	FromUserID  int
-	ToUserID int
-	Amout int
+	TransactionFromUserID int
+	TransactionToUserID int
+	TransactionAmount int
+	TransactionCurrency Currency
 }
 
-func NewTransaction(fromUserid int , toUserID int , amout int ) ( Transaction , error) {
-	if amout <= 0 {
-		return Transaction{} , CeroValueError
-	} 
-	if fromUserid == toUserID {
-		return Transaction{} , IDEqualsError
+func NewTransactionConstructor ( fromUserID int , toUserID int, amount int , currency Currency) (Transaction,error) {
+	if fromUserID == toUserID {
+		return Transaction{} , ErrSameUserTransaction
 	}
-	return Transaction{
-		FromUserID: fromUserid,
-		ToUserID: toUserID,
-		Amout: amout,
-	},nil
-}
-
-func Transfer ( fromWallet *Wallet , toWallet *Wallet , amount int ) (Transaction , error) {
 	if amount <= 0 {
-		return Transaction{} , CeroValueError
-	}
-	if fromWallet.OwnerID  == toWallet.OwnerID {
-		return Transaction{} , IDEqualsError
-	}
-	if fromWallet.Currency != toWallet.Currency {
-		return Transaction{} , DiferentCurrencyErrors
-	}
-	if fromWallet.Balance < amount {
-		return Transaction{} , AmountInsuficient
+		return Transaction{} , ErrInvalidTransactionAmount
 	}
 
-	fromWallet.
+	return Transaction{
+			TransactionFromUserID : fromUserID ,
+			TransactionToUserID :toUserID,
+			TransactionAmount :amount,
+			TransactionCurrency : currency,
+	} , nil
 }

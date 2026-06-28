@@ -1,35 +1,64 @@
 package main
 
-import (
-	"fmt"
-	"social-wallet/domain"
+import(
+	 "fmt"
+	 "social-wallet/domain"
+	 "social-wallet/aplication"
 )
 
+
 func main() {
-	fmt.Println("*** APP FINTECH WALLET ***")
-	fmt.Printf("\n")
+	UserGabriel , err  := domain.NewUserConstructor(1,"gabriel","gabriel@email.com")
 
-	fmt.Println("*** Se crean los Usuarios ***")
-	userGabriel := domain.User{ID: 1 ,Name: "Gabriel",Email: "gabriel@email.com"}
-	userAna := domain.User{ID: 2 ,Name: "Ana",Email: "ana@email.com"}
-	fmt.Println("- Gabriel : " , userGabriel)
-	fmt.Println("- Ana : " , userAna)
-	fmt.Printf("\n")
-
-	fmt.Println("*** Se crean las Wallets ***")
-	walletGabriel , err := domain.NewWallet(userGabriel.ID ,domain.CurrencyARS )
 	if err != nil {
-		fmt.Println("Error al crear wallet de Gabriel" , err)
+		fmt.Println(err)		 
+		return
 	}
-	fmt.Println("- Gabriel : " , walletGabriel)
 
-	walletAna , err := domain.NewWallet(userAna.ID ,domain.CurrencyUSD )
+	UserAna , err  := domain.NewUserConstructor(2,"ana","ana@email.com")
+
 	if err != nil {
-		fmt.Println("Error al crear wallet de Ana" , err)
+		fmt.Println(err)		
+		return 
 	}
-	fmt.Println("- Ana : " , walletAna)
 
-	
+	WalletGabriel , err := domain.NewWalletConstructor(UserGabriel.UserID,domain.CurrencyARS )
 
-	
+		if err != nil {
+		fmt.Println(err)
+		return		 
+	 }
+
+	WalletAna , err := domain.NewWalletConstructor(UserAna.UserID,domain.CurrencyARS )
+
+		if err != nil {
+		fmt.Println(err)	
+		return	 
+	 }
+
+	 err = WalletGabriel.Deposit(10000)
+
+	 if err != nil {
+		fmt.Println(err)		 
+		return
+	 }
+
+	 fmt.Println("Saldo Actualizado de Gabriel : " , WalletGabriel.WalletBalance)
+	 fmt.Println("Saldo Actualizado de Ana : " , WalletAna.WalletBalance)
+	 fmt.Printf("\n")
+
+	 transactionSuccefull , err := aplication.Transfer(&WalletGabriel,&WalletAna,2500)
+
+	 if err != nil {
+		fmt.Println(err)
+		return
+	 }
+
+	fmt.Printf("%s : %d\n" , UserGabriel.UserName , WalletGabriel.WalletBalance)
+	fmt.Printf("%s : %d\n" , UserAna.UserName , WalletAna.WalletBalance)
+
+	fmt.Println("Transaction Succefull")
+	fmt.Println(transactionSuccefull)
+
+
 }

@@ -1,6 +1,6 @@
 package domain
 
-type Currency string 
+type Currency string
 
 const (
 	CurrencyARS Currency = "ARS"
@@ -8,11 +8,11 @@ const (
 	CurrencyBTC Currency = "BTC"
 )
 
-func (currency Currency) IsValid() bool {
+func ( currency Currency) IsValid() bool {
 	switch currency {
-	case CurrencyARS,CurrencyUSD, CurrencyBTC :
+	case CurrencyARS , CurrencyUSD , CurrencyBTC :
 		return true
 	default : 
-	return false
-	}
+		return false	
+	}	
 }
