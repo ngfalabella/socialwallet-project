@@ -1,24 +1,23 @@
 package domain
 
 type Transaction struct {
-	TransactionFromUserID int
-	TransactionToUserID int
-	TransactionAmount int
+	UserFromID          int
+	UserToID            int
+	TransactionAmount   int
 	TransactionCurrency Currency
 }
 
-func NewTransactionConstructor ( fromUserID int , toUserID int, amount int , currency Currency) (Transaction,error) {
-	if fromUserID == toUserID {
-		return Transaction{} , ErrSameUserTransaction
+func NewTransaction(from int, to int, amount int, currency Currency) (Transaction, error) {
+	if from == to {
+		return Transaction{}, InvalidUsersTransaction
 	}
 	if amount <= 0 {
-		return Transaction{} , ErrInvalidTransactionAmount
+		return Transaction{} ,  InvalidAmountTransaction
 	}
-
 	return Transaction{
-			TransactionFromUserID : fromUserID ,
-			TransactionToUserID :toUserID,
-			TransactionAmount :amount,
-			TransactionCurrency : currency,
+		UserFromID: from,
+		UserToID: to,
+		TransactionAmount: amount,
+		TransactionCurrency: currency,
 	} , nil
 }

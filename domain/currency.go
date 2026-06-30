@@ -8,11 +8,11 @@ const (
 	CurrencyBTC Currency = "BTC"
 )
 
-func ( currency Currency) IsValid() bool {
+func (currency Currency) IsValidCurrency() bool {
 	switch currency {
-	case CurrencyARS , CurrencyUSD , CurrencyBTC :
+	case CurrencyARS,CurrencyUSD,CurrencyBTC :
 		return true
-	default : 
+	default :
 		return false	
-	}	
+	}
 }

@@ -3,6 +3,6 @@ package domain
 import "errors"
 
 var (
-	ErrSameUserTransaction = errors.New("No puede ser el mismo usuario")
-	ErrInvalidTransactionAmount = errors.New("Monto de operacion invalida")
+	InvalidUsersTransaction = errors.New("No pueden hacerse transacciones al mismo ID usuario")
+	InvalidAmountTransaction = errors.New("No se pueden registrar Transacciones en monto negativo")
 )

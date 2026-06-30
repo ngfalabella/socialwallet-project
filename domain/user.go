@@ -1,21 +1,23 @@
 package domain
 
 type User struct {
-	UserID int
+	UserID int 
 	UserName string
 	UserEmail string
 	UserActive bool
 }
 
-
-func NewUserConstructor ( id int , name string, email string ) (User , error ) {
+func NewUser( id int , name string ,email string ) (User,error) {
+	if name == "" {
+		return User{} , InvalidNameUser
+	}
 	if email == "" {
-		return User{} , ErrInvalidEmail
+		return User{} , InvalidEmailUser
 	}
 	return User{
-		UserID : id,
-	  UserName : name,
-	  UserEmail : email,
-	  UserActive : true,
-	} , nil 
+		UserID: id,
+		UserName: name,
+		UserEmail: email,
+		UserActive: true,
+	 } , nil
 }

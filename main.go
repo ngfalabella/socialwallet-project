@@ -1,64 +1,67 @@
 package main
 
-import(
-	 "fmt"
-	 "social-wallet/domain"
-	 "social-wallet/aplication"
+import (
+	"fmt"
+	"social-wallet/domain"
+	"social-wallet/aplication"
 )
 
 
+
 func main() {
-	UserGabriel , err  := domain.NewUserConstructor(1,"gabriel","gabriel@email.com")
+	userGabriel , err := domain.NewUser(1,"Gabriel","gabriel@gmail.com")
 
 	if err != nil {
-		fmt.Println(err)		 
+		fmt.Println(err)
 		return
 	}
 
-	UserAna , err  := domain.NewUserConstructor(2,"ana","ana@email.com")
-
-	if err != nil {
-		fmt.Println(err)		
-		return 
+	UserAna , err := domain.NewUser(2 , "Ana" , "ana@gmail.com")
+		
+		if err != nil {
+		fmt.Println(err)
+		return
 	}
 
-	WalletGabriel , err := domain.NewWalletConstructor(UserGabriel.UserID,domain.CurrencyARS )
+  walletGabriel , err := domain.NewWallet(userGabriel.UserID , domain.CurrencyARS )
 
 		if err != nil {
 		fmt.Println(err)
-		return		 
-	 }
+		return
+	}
 
-	WalletAna , err := domain.NewWalletConstructor(UserAna.UserID,domain.CurrencyARS )
+	walletAna , err := domain.NewWallet(UserAna.UserID , domain.CurrencyARS )
 
 		if err != nil {
-		fmt.Println(err)	
-		return	 
-	 }
-
-	 err = WalletGabriel.Deposit(10000)
-
-	 if err != nil {
-		fmt.Println(err)		 
-		return
-	 }
-
-	 fmt.Println("Saldo Actualizado de Gabriel : " , WalletGabriel.WalletBalance)
-	 fmt.Println("Saldo Actualizado de Ana : " , WalletAna.WalletBalance)
-	 fmt.Printf("\n")
-
-	 transactionSuccefull , err := aplication.Transfer(&WalletGabriel,&WalletAna,2500)
-
-	 if err != nil {
 		fmt.Println(err)
 		return
-	 }
+	}
 
-	fmt.Printf("%s : %d\n" , UserGabriel.UserName , WalletGabriel.WalletBalance)
-	fmt.Printf("%s : %d\n" , UserAna.UserName , WalletAna.WalletBalance)
+	err = walletGabriel.Deposit(10000)
 
-	fmt.Println("Transaction Succefull")
-	fmt.Println(transactionSuccefull)
+		if err != nil {
+		fmt.Println(err)
+		return
+	}
 
+	fmt.Println("***Saldos Gabriel y Ana ANTES de Transferir")
+	fmt.Println("Gabriel : " , walletGabriel.WalletBalance)
+	fmt.Println("Ana : " , walletAna.WalletBalance)
+
+	transactionTest , err := aplication.TransferOperation(&walletGabriel,&walletAna,2500)
+	
+		if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	fmt.Println("***Saldos Gabriel y Ana DESPUES de Transferir")
+	fmt.Println("Gabriel : " , walletGabriel.WalletBalance)
+	fmt.Println("Ana : " , walletAna.WalletBalance)
+
+	fmt.Printf("\n")
+
+	fmt.Println("Transaccion Creada")
+	fmt.Println(transactionTest)
 
 }

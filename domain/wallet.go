@@ -1,36 +1,36 @@
 package domain
 
 type Wallet struct {
-	WalletOwnerID int
+	WalletID int
 	WalletBalance int
 	WalletCurrency Currency
 }
 
-func NewWalletConstructor (owenerID int , currency Currency )(Wallet,error) {
-	if !currency.IsValid() {
-		return Wallet{} , ErrInvalidCurrency
+func NewWallet( id int ,currency Currency) (Wallet , error ) {
+	if !currency.IsValidCurrency() {
+		return Wallet{},InvalidCurrencyWallet
 	}
 	return Wallet{
-			WalletOwnerID : owenerID ,
-			WalletBalance : 0 ,
-			WalletCurrency : currency ,
-	} , nil
+		WalletID: id,
+		WalletBalance: 0,
+		WalletCurrency: currency,
+	},nil
 }
 
-func (wallet *Wallet) Deposit(amount int) error {
+func (wallet *Wallet) Deposit(amount int ) error {
 	if amount <= 0 {
-		return ErrInvalidAmount
+		return InvalidMountWallet
 	}
 	wallet.WalletBalance += amount
 	return nil
 }
 
-func (wallet *Wallet) Withdraw(amount int) error {
-	if amount == 0 {
-		return ErrInvalidAmount
+func ( wallet *Wallet) Withdraw ( amount int) error {
+	if amount  <= 0 {
+		return InvalidMountWallet
 	}
-	if amount > wallet.WalletBalance {
-		return ErrInsufficientBalance
+	if wallet.WalletBalance < amount {
+		return InvalidBalanceFinal
 	}
 	wallet.WalletBalance -= amount
 	return nil

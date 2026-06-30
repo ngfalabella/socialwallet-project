@@ -1,30 +1,37 @@
 package aplication
 
-import "social-wallet/domain"
+import (
+	"fmt"
+	"social-wallet/domain"
+)
 
-func Transfer( fromWallet *domain.Wallet ,  toWallet *domain.Wallet  , amount int) (domain.Transaction , error ){
-	if fromWallet.WalletOwnerID == toWallet.WalletOwnerID {
-		return domain.Transaction{} , ErrSameWalletOwner
+func TransferOperation(walletOwner *domain.Wallet, walletTo *domain.Wallet, amount int) (domain.Transaction, error) {
+	if walletOwner.WalletID == walletTo.WalletID {
+		return domain.Transaction{}, InvalidTransferOwner
 	}
-	if fromWallet.WalletCurrency != toWallet.WalletCurrency {
-		return domain.Transaction{} , ErrCurrencyMismatch
+	if walletOwner.WalletCurrency != walletTo.WalletCurrency {
+		return domain.Transaction{}, InvalidCurrencyTransfer
 	}
-	transactionResult , err := domain.NewTransactionConstructor(fromWallet.WalletOwnerID ,toWallet.WalletOwnerID, amount, fromWallet.WalletCurrency )
-  		
+	transactionFinal , err := domain.NewTransaction(walletOwner.WalletID, walletTo.WalletID, amount, walletOwner.WalletCurrency)
 	if err != nil {
-		return domain.Transaction{} , err
-	}
-	
-	err = fromWallet.Withdraw(amount) 
-	if err != nil {
-		return domain.Transaction{} , err
+		return domain.Transaction{}, err
 	}
 
-	err = toWallet.Deposit(amount)
+	err = walletOwner.Withdraw(amount)
 
 	if err != nil {
-		return domain.Transaction{} , err
+		return domain.Transaction{} , fmt.Errorf(
+			"no se pudo retirar el dinero de la wallet de origen : %w" , err,
+		)
 	}
-	
-	return transactionResult , nil
+
+	err = walletTo.Deposit(amount)
+
+	if err != nil {
+		return domain.Transaction{} ,  fmt.Errorf(
+			"no se pudo depositar el dinero en la wallet destino : %w", err ,
+		)
+	}
+
+	return transactionFinal , nil
 }
