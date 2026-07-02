@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"errors"
 	"social-wallet/domain"
 	"social-wallet/aplication"
 )
@@ -48,11 +49,16 @@ func main() {
 	fmt.Println("Gabriel : " , walletGabriel.WalletBalance)
 	fmt.Println("Ana : " , walletAna.WalletBalance)
 
-	transactionTest , err := aplication.TransferOperation(&walletGabriel,&walletAna,2500)
+	transactionTest , err := aplication.TransferOperation(&walletGabriel,&walletAna,12000)
 	
-		if err != nil {
-		fmt.Println(err)
-		return
+	if err != nil {
+		if errors.Is(err ,domain.InvalidBalanceFinal){
+			fmt.Println("La transferencia fue rechazada por saldo insuficiente")
+			fmt.Println("Error completo:", err)
+			return
+		}
+		fmt.Println("Ocurrió otro error:", err)
+	  return
 	}
 
 	fmt.Println("***Saldos Gabriel y Ana DESPUES de Transferir")
